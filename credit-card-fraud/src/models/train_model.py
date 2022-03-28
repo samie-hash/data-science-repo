@@ -8,7 +8,6 @@ import time
 from sklearn.metrics import f1_score, precision_score, recall_score, accuracy_score
 from matplotlib.cbook import boxplot_stats
 from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.model_selection import GridSearchCV
 
 class QuantileBasedAnomalyDetection(BaseEstimator, TransformerMixin):
 

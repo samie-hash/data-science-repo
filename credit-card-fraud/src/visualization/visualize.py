@@ -2,7 +2,6 @@
 # This module holds utility classes and functions for visualization
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 def quantile_model_viz(X, k=1.5, output=None, ylabel=''):
     fig, ax = plt.subplots(1, 1, figsize=(12, 7))
