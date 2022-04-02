@@ -110,6 +110,7 @@ Step 2: Open the project folder in vscode or navigate to the project respository
 Step 3: Install the project dependencies by running the following command `pip install -r requirements.txt`
 
 If you want to retrain the model follow this steps
+
     - Navigate to `cd src/data/`
     - Run the following command `python make_dataset.py ../../data/raw/creditcard.csv ../../data/processed/processed.csv` which would create the processed file ready for training. NOTE: ensure you download the data from [here](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud) and copy the file to `data/raw/`
     - Navigate to by using `cd ..` and `cd src/models`
