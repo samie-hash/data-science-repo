@@ -1,13 +1,18 @@
 # train_model.py
 # This module holds utility classes and functions that trains a model
+import time
+import click
 import numpy as np
+import logging
 import pandas as pd
 import joblib as jbl
 
-import time
 from sklearn.metrics import f1_score, precision_score, recall_score, accuracy_score
+from sklearn.model_selection import train_test_split, GridSearchCV
 from matplotlib.cbook import boxplot_stats
 from sklearn.base import BaseEstimator, TransformerMixin
+
+from tqdm import tqdm # progress bar
 
 class QuantileBasedAnomalyDetection(BaseEstimator, TransformerMixin):
 
@@ -26,7 +31,7 @@ class QuantileBasedAnomalyDetection(BaseEstimator, TransformerMixin):
     def fit(self, X, y=None):
         # verify that data is 1-d
         start = time.time()
-        if len(X.shape) == 2:
+        if X.shape[1] > 1:
             raise ValueError('Data shape must be a 1-D array')
 
         stats = boxplot_stats(X.values, whis=self.k)
@@ -40,7 +45,7 @@ class QuantileBasedAnomalyDetection(BaseEstimator, TransformerMixin):
     def predict(self, X, y=None):
         self.predictions = []
 
-        for row in X:
+        for row in X.values:
             if self.__in_range(row):
                 self.predictions.append(0) # normal
             else:
@@ -72,5 +77,63 @@ def evaluate_perf(true, pred, prettify=False):
             'rec_score': recall_score(true, pred), 
             'accuracy': accuracy_score(true, pred)}
 
+@click.command()
+def build_model():
+    
+    logger = logging.getLogger(__name__)
+    logger.info('creating model from processed data')
 
+    # create model
+    model = QuantileBasedAnomalyDetection()
 
+    # loads the processed data from disk if available
+    try:
+        processed = pd.read_csv('../../data/processed/processed.csv')
+    except FileNotFoundError:
+        logger.error('Ensure you run "python make_dataset.py input_filepath output_filepath" before running this file')
+
+    # fit the model to processed data
+    col_length = processed.shape[1]
+
+    processed = processed.sample(frac=1)
+    X = processed.iloc[:, 0:col_length - 1]
+    y = processed.iloc[:, col_length - 1]
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+    model.fit(X_train, y_train)
+
+    print('Training Performance')
+    print(evaluate_perf(y_train, model.predict(X_train), prettify=True))
+    print()
+    print('Testing Performance')
+    print(evaluate_perf(y_test, model.predict(X_test), prettify=True))
+
+    # fine tune the model
+    param_grid = {
+        'k': np.linspace(1, 5, 50)
+    }
+
+    print('Starting Optimization')
+    gs = GridSearchCV(model, param_grid=param_grid, scoring='f1', verbose=1)
+    tqdm(gs.fit(X_train, y_train))
+
+    best_model = gs.best_estimator_
+    print('Optimization Done')
+
+    print('Training Performance(Optimized Model)')
+    print(evaluate_perf(y_train, best_model.predict(X_train), prettify=True))
+    print()
+    print('Testing Performance(Optimized Model)')
+    print(evaluate_perf(y_test, best_model.predict(X_test), prettify=True))
+
+    # save the model to disk
+    print('.......Saving to disk')
+    jbl.dump(best_model, '../../models/best_model.joblib')
+    print('DONE!!!!')
+
+if __name__ == "__main__":
+    log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    logging.basicConfig(level=logging.INFO, format=log_fmt)
+    
+    build_model()

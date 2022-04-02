@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Ignored folders
+dog-breed-classification-dnn
+
 # C extensions
 *.so
 

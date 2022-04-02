@@ -1,29 +1,25 @@
-import joblib as jbl
-
-from fastapi import FastAPI
-from fastapi import status
-from pydantic import BaseModel
 import sys
+sys.path.append('..')
+import joblib as jbl
+import gradio as gr
 
-sys.path.append('.')
-from src.models.train_model import *
+import pandas as pd
+from src.models.train_model import QuantileBasedAnomalyDetection
 
-app = FastAPI()
+model = jbl.load('../models/best_model.joblib')
 
-model = jbl.load('./models/quantile_model.joblib')
+def predict_model(val):
+    data_point = pd.DataFrame(data=[val])
+    prediction = model.predict(data_point)
+    print(prediction)
+    if prediction[0] == 1:
+        return "Fraudulent"
+    else:
+        return "Non Fraudulent"
 
-# schema
-class QuantileModel(BaseModel):
-    V17: list
-
-@app.get('/')
-def root():
-    return {'data': 'Credit Card Anomaly Detection API'}
-
-@app.post('/predict', status_code=status.HTTP_200_OK)
-def predict(body: QuantileModel):
-    body_dict = body.dict()
-    data = body_dict['V17']
-    predictions = model.predict(data)
-
-    return {'predictions': predictions}
+iface = gr.Interface(
+    fn=predict_model,
+    inputs=[gr.inputs.Slider(-6, 6)],
+    outputs=["text"],
+)
+iface.launch()
