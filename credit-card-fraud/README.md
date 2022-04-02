@@ -83,13 +83,21 @@ Project Organization
 Tools Used
 ==============================
 Python==3.8.3
+
 scikit-learn==1.0.2
+
 pandas==1.4.1
+
 numpy==1.22.3
+
 matplotlib==3.5.1
+
 matplotlib-inline==0.1.3
+
 jupyter-client==7.1.2
+
 jupyter-core==4.9.2
+
 gradio==2.9.1
 
 How to use the application
