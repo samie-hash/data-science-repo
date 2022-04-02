@@ -14,7 +14,7 @@ The dataset was collected from kaggle as a csv file and stored in `data/raw/`
 During the preparation stage, the columns with the highest correlation with the target variable `Class` were selected 
 and used for the modeling. 
 
-### Model Building
+#### Model Building
 This stage involves the actual model building. We considered an unsupervised learning approach due to the following reasons
 - Imbalanced dataset
 - Fraudster might change their pattern and this will require retraining the model to learn the new patterns
@@ -25,10 +25,10 @@ A quantile based anomaly detection algorithm uses a box plot which flags data po
 - Strictly one dimensional, we cannot use two variables to train the model as such the variable with the highest correlation with the target is used.
 - Skewed data might requires different values of k to detect upper and lower outliers
 
-4. Insights
+#### Insights
 The quantile based model is relatively simple and it is obvious that it flags values between -5 and 5 as normal transaction, every other data points are classified as fraudulent.
 
-5. Future Work
+#### Future Work
 - Create a distribution based model (Z-score) for classifying fraudulent transactions and normal transactions
 - Create a DBSCAN clustering based model to segment fraudulent transactions and normal transactions
 - Use autoencoders to detect fraudulent transactions and normal transactions
