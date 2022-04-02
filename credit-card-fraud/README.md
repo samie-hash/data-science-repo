@@ -111,7 +111,7 @@ Step 3: Install the project dependencies by running the following command `pip i
 
 If you want to retrain the model follow this steps
 - Navigate to `cd src/data/`
-- Run the following command `python make_dataset.py ../../data/raw/creditcard.csv ../../data/processed/processed.csv` which would create the processed file ready for training. NOTE: ensure you download the data from [here]url(https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud) and copy the file to `data/raw/`
+- Run the following command `python make_dataset.py ../../data/raw/creditcard.csv ../../data/processed/processed.csv` which would create the processed file ready for training. NOTE: ensure you download the data from https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud and copy the file to `data/raw/`
 - Navigate to by using `cd ..` and `cd src/models`
 - Run the following command `python train_model.py`
 - Wait for the model to finish training
