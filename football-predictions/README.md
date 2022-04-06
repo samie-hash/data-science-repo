@@ -46,6 +46,11 @@ Project Organization
     │   │   ├── predict_model.py
     │   │   └── train_model.py
     │   │
+    |   ├── utils          <- Scripts that contains utility functions
+    |   |   |
+    |   |   ├── utils.py
+    |   |   └── config.py
+    |   |
     │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
     │       └── visualize.py
     │

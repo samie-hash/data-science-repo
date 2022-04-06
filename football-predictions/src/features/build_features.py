@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 from dataclasses import dataclass
 from sklearn.base import TransformerMixin, BaseEstimator
+from src.utils import utils
 
 @dataclass
 class PositionStat:
@@ -14,23 +15,28 @@ class PositionStat:
     points: int = 0
     position: int = 0
 
-class IntegerConvert(BaseEstimator, TransformerMixin):
-    """
-    This transformer converts the columns type specified to integer format
-    """
-    
-    def __init__(self, columns):
-        self.columns = columns
+class Preprocessor(BaseEstimator, TransformerMixin):
+
+    def __init__(self):
+        pass
 
     def fit(self, X, y=None):
         return self
 
     def transform(self, X, y=None):
-        for col in self.columns:
-            X[col] = pd.to_numeric(X[col])
+        # convert to datetime object
+        X['Date'] = pd.to_datetime(X['Date'].apply(lambda x: utils.date_to_regular_fmt(x)), infer_datetime_format=True)
+
+        # convert to integer
+        columns = ['FTHG','FTAG','HTHG','HTAG','HS','AS','HST','AST','HF','AF','HC','AC','HY','AY','HR','AR']
+        X = utils.integer_convert(X, columns)
+
+        # remove punctuation if any
+        X.HomeTeam = X.HomeTeam.apply(lambda x: utils.remove_puntuations(x))
+        X.AwayTeam = X.AwayTeam.apply(lambda x: utils.remove_puntuations(x))
 
         return X
-
+        
 class LeaguePosAdder(BaseEstimator, TransformerMixin):
 
     """
@@ -41,6 +47,9 @@ class LeaguePosAdder(BaseEstimator, TransformerMixin):
         pass
 
     def fit(self, X, y=None):
+        return self
+
+    def transform(self, X, y=None):
         seasons = X.SeasonLabel.unique()
         X['HCLPOS'] = 0
         X['ACLPOS'] = 0
@@ -80,10 +89,7 @@ class LeaguePosAdder(BaseEstimator, TransformerMixin):
                 pos += 1
 
         return X
-
-    def transform(self, X, y=None):
-        return self.league_table
-
+        
     def __update_team(self, team, points, goals_for, goals_against):
         team.points += points
         team.goals_for += goals_for
