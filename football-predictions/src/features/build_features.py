@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 from dataclasses import dataclass
 from sklearn.base import TransformerMixin, BaseEstimator
-from src.utils import utils
+
 
 @dataclass
 class PositionStat:
@@ -53,41 +53,49 @@ class LeaguePosAdder(BaseEstimator, TransformerMixin):
         seasons = X.SeasonLabel.unique()
         X['HCLPOS'] = 0
         X['ACLPOS'] = 0
+        X['HGD'] = 0 
+        X['AGD'] = 0
+        X['HPOINTS'] = 0
+        X['APOINTS'] = 0
 
         for season in seasons:
             season_data = X[X['SeasonLabel'] == season]
             self.league_table = {}
         
-        for club in season_data.HomeTeam.unique():
-            self.league_table[club] = PositionStat()
+            for club in season_data.HomeTeam.unique():
+                self.league_table[club] = PositionStat()
 
-        for idx, row in season_data.iterrows():
-            # set the points
-            X.loc[idx, 'HCLPOS'] = self.league_table[row.HomeTeam].position
-            X.loc[idx, 'ACLPOS'] = self.league_table[row.AwayTeam].position
-                
-            # update team based on score result
-            if row['FTR'] == 'H':
-                self.league_table[row.HomeTeam] = self.__update_team(self.league_table[row.HomeTeam], 3, row['FTHG'], row['FTAG'])
-                self.league_table[row.AwayTeam] = self.__update_team(self.league_table[row.AwayTeam], 0, row['FTAG'], row['FTHG'])
-                
-            if row['FTR'] == 'A':
-                self.league_table[row.AwayTeam] = self.__update_team(self.league_table[row.AwayTeam], 3, row['FTAG'], row['FTHG'])
-                self.league_table[row.HomeTeam] = self.__update_team(self.league_table[row.HomeTeam], 0, row['FTHG'], row['FTAG'])
+            for idx, row in season_data.iterrows():
+                # set the points
+                X.loc[idx, 'HCLPOS'] = self.league_table[row.HomeTeam].position
+                X.loc[idx, 'ACLPOS'] = self.league_table[row.AwayTeam].position
+                X.loc[idx, 'HGD'] = self.league_table[row.HomeTeam].goals_diff
+                X.loc[idx, 'AGD'] = self.league_table[row.AwayTeam].goals_diff
+                X.loc[idx, 'HPOINTS'] = self.league_table[row.HomeTeam].points
+                X.loc[idx, 'APOINTS'] = self.league_table[row.AwayTeam].points
 
-            if row['FTR'] == 'D':
-                self.league_table[row.HomeTeam] = self.__update_team(self.league_table[row.HomeTeam], 1, row['FTHG'], row['FTAG'])
-                self.league_table[row.AwayTeam] = self.__update_team(self.league_table[row.AwayTeam], 1, row['FTAG'], row['FTHG'])
+                # update team based on score result
+                if row['FTR'] == 'H':
+                    self.league_table[row.HomeTeam] = self.__update_team(self.league_table[row.HomeTeam], 3, row['FTHG'], row['FTAG'])
+                    self.league_table[row.AwayTeam] = self.__update_team(self.league_table[row.AwayTeam], 0, row['FTAG'], row['FTHG'])
+                    
+                if row['FTR'] == 'A':
+                    self.league_table[row.AwayTeam] = self.__update_team(self.league_table[row.AwayTeam], 3, row['FTAG'], row['FTHG'])
+                    self.league_table[row.HomeTeam] = self.__update_team(self.league_table[row.HomeTeam], 0, row['FTHG'], row['FTAG'])
 
-            # sort the self.league_table
-            self.league_table = dict(sorted(self.league_table.items(), key=lambda x: (x[1].points, -x[1].goals_diff), reverse=True))
+                if row['FTR'] == 'D':
+                    self.league_table[row.HomeTeam] = self.__update_team(self.league_table[row.HomeTeam], 1, row['FTHG'], row['FTAG'])
+                    self.league_table[row.AwayTeam] = self.__update_team(self.league_table[row.AwayTeam], 1, row['FTAG'], row['FTHG'])
 
-            # set the position
-            pos = 1
-            for key, value in self.league_table.items():
-                self.league_table[key].position = pos
-                pos += 1
+                # sort the self.league_table
+                self.league_table = dict(sorted(self.league_table.items(), key=lambda x: (x[1].points, -x[1].goals_diff), reverse=True))
 
+                # set the position
+                pos = 1
+                for key, value in self.league_table.items():
+                    self.league_table[key].position = pos
+                    pos += 1
+            
         return X
         
     def __update_team(self, team, points, goals_for, goals_against):

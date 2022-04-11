@@ -32,7 +32,10 @@ def main(input_filepath, output_filepath, league):
     # build features
     # pipeline = Pipeline([
     #     ('preprocessor', buif.Preprocessor()),
-
+    #       ('league_pos_adder', buif.LeaguePosAdder()),
+    #         ('elo_adder', buif.EloAdder())
+    #   ('column_extractor', ColumnExtractor()),
+    #   
     # ])
     # save the processed dataset
 
