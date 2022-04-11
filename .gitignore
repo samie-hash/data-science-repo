@@ -5,7 +5,6 @@ __pycache__/
 
 # Ignored folders
 dog-breed-classification-dnn
-football-predictions
 
 # C extensions
 *.so
