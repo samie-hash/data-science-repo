@@ -124,7 +124,7 @@ def create_model(model_url, num_classes=1):
     A TensorFlow Hub feature extraction URL.
   num_classes: int
     Number of output neurons in the output layer,
-    should be equal to number of target classes, default 2
+    should be equal to number of target classes, default 1
 
   Returns
   -------
@@ -155,7 +155,7 @@ early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=3
 history = model.fit(train_data, validation_data=test_data,
             epochs=50, steps_per_epoch=len(train_data),
             validation_steps=len(test_data),
-            callbacks=[create_tensorboard_callback('tensorflow_hub', 'model_6_tl'), early_stopping])
+            callbacks=[create_tensorboard_callback('tensorflow_hub', 'model'), early_stopping])
 ```
 
 In order to visualize the accuracy and loss curves to understand the performance of the model, a utility function was created
@@ -198,7 +198,7 @@ def make_prediction(target_class):
     img = img / 255
     img_resize = tf.image.resize(img, size=[224, 224])
     img_expanded = tf.expand_dims(img_resize, axis=0)
-    prediction = model_6.predict(img_expanded)
+    prediction = model.predict(img_expanded)
     plt.imshow(img[:,:,0], cmap='gray')
     plt.axis('off')
     plt.title(class_names[int(tf.round(prediction)[0])])
