@@ -58,8 +58,8 @@ zip_ref.extractall()
 zip_ref.close()
 ```
 
-```
 Then the class labels were defined
+
 ```
 class_names = ['defects', 'no_defects']
 ```
