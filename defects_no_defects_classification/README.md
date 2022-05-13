@@ -32,7 +32,7 @@ The provided data is artificially generated, but similar to real world problems.
 To solve this problem, state-of-the-art [elasticnet]('https://tfhub.dev/tensorflow/efficientnet/b0/feature-vector/1') model is leveraged and a convolutional net is build on top of it.
  
 First the libraries that would be used were imported
-```
+```python
 import os
 import datetime
 import numpy as np
@@ -46,7 +46,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 ```
 gdown libary was used to unzip the processed file which is stored on my google drive
 
-```
+```python
 import zipfile
 
 !gdown https://drive.google.com/uc?id=1ODEDCLVdkCIdyT7otYkzJbbkebAp975P
@@ -60,13 +60,13 @@ zip_ref.close()
 
 Then the class labels were defined
 
-```
+```python
 class_names = ['defects', 'no_defects']
 ```
 
 The code below sets up the train and test directory and load them in batches
 
-```
+```python
 train_datagen = ImageDataGenerator(rescale=1/255.0)
 test_datagen = ImageDataGenerator(rescale=1/255.0)
 
@@ -91,7 +91,7 @@ test_data = test_datagen.flow_from_directory(directory=test_dir,
 
 We defined two tensorflow callbacks; the first callback logs the result to tensorboard and the second callback is for early stopping with a patience of 3. This means that the model would stop training when the validation loss does not reduce after 3 consecutive epochs
 
-```
+```python
 def create_tensorboard_callback(dir_name, experiment_name):
   log_dir = dir_name + '/' + experiment_name + '/' + datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
   tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir)
@@ -101,8 +101,10 @@ def create_tensorboard_callback(dir_name, experiment_name):
 early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=3)
 
 ```
+
 The model architecture is given below
-```
+
+```python
 def create_model(model_url, num_classes=1):
   """
   Takes a TensorFlow Hub URL and creates a Keras Sequential model with it
@@ -149,7 +151,7 @@ history = model.fit(train_data, validation_data=test_data,
 
 In order to visualize the accuracy and loss curves to understand the performance of the model, a utility function was created
 
-```
+```python
 def plot_loss_curves(history):
     """
     Plot loss curves and accuracy curves on separate figure object
@@ -178,7 +180,7 @@ plot_loss_curves(history.history)
 
 The function `make_prediction` takes a target folder and randomly selects an image and predicts the class label
 
-```
+```python
 def make_prediction(target_class):
     target_folder = 'processed/test/' + target_class
     random_image = random.sample(os.listdir(target_folder), 1)
@@ -195,6 +197,7 @@ def make_prediction(target_class):
    
 make_prediction('no_defects')
 ```
+
 ## Technologies and Architecture used
 - Python
 - Tensorflow
