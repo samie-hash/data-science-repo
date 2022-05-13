@@ -6,7 +6,22 @@ Defect detection plays a vital role in quality control and assurance process. Du
 ## Background Study
 
 ## Aims and Objectives
-Create a convnet(Convolutional Neural Network) that separates defect surface materials from non defects
+Create a convnet (Convolutional Neural Network) that separates defect surface materials from non defects
+
+***Here is an example of the model in action***
+
+![](https://github.com/samie-hash/data-science-repo/blob/main/defects_no_defects_classification/defect_2.png)
+
+The above image is classified as defect
+
+![](https://github.com/samie-hash/data-science-repo/blob/main/defects_no_defects_classification/no_defect.png)
+
+The above image is classified as no_defect
+
+The model fails in the following images, this may be due to the black spot at the image center
+
+![](https://github.com/samie-hash/data-science-repo/blob/main/defects_no_defects_classification/no_defect_missed.png)
+![](https://github.com/samie-hash/data-science-repo/blob/main/defects_no_defects_classification/defect_1.png)
 
 ## Data Source
 The data set was gotten from this [link](https://conferences.mpi-inf.mpg.de/dagm/2007/prizes.html) and preprocessed using this utility [notebook]()
