@@ -1,7 +1,7 @@
 # defects_no_defects_classification
 
 ## Introduction 
-Defect detection plays a vital role in quality control and assurance process. During the production process, due to inefficiency of humans and machines, 100% quality on manufactued products cannot be guaranteed. This implies that care has to be taken in order to ensure only the best manufactured are shipped. "Defect" can be defined as a deviation from the norm. Surface defect detections can be thought of as detection of scratches, color contamination, holes etc. Manual detection was considered the norm, but this method leads to low efficiency, the speed of detection is relatively low and it's also subject to human emotions.
+Defect detection plays a vital role in quality control and assurance process. During the production process, due to inefficiency of humans and machines, 100% quality on manufactured products cannot be guaranteed. This implies that care has to be taken in order to ensure only the best manufactured are shipped. "Defect" can be defined as a deviation from the norm. Surface defect detections can be thought of as detection of scratches, color contamination, holes etc. Manual detection was considered the norm, but this method leads to low efficiency, the speed of detection is relatively low and it's also subject to human emotions.
 
 ## Background Study
 
