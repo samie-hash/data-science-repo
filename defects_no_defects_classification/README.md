@@ -1,9 +1,13 @@
 # defects_no_defects_classification
 
 ## Introduction 
-Defect detection plays a vital role in quality control and assurance process. During the production process, due to inefficiency of humans and machines, 100% quality on manufactured products cannot be guaranteed. This implies that care has to be taken in order to ensure only the best manufactured are shipped. "Defect" can be defined as a deviation from the norm. Surface defect detections can be thought of as detection of scratches, color contamination, holes etc. Manual detection was considered the norm, but this method leads to low efficiency, the speed of detection is relatively low and it's also subject to human emotions.
+Defect detection plays a vital role in quality control and assurance process. During the production process, due to inefficiency of humans and machines, 100% quality on manufactured products cannot be guaranteed. This implies that care has to be taken in order to ensure only the best manufactured products are shipped. 
 
-## Background Study
+"Defect" can be defined as a deviation from the norm. Surface defect detections can be thought of as detection of scratches, color contamination, holes etc. Manual detection was considered the norm, but this method leads to low efficiency, the speed of detection is relatively low and it's also subject to human emotions.
+
+## Motivation
+Deep learning is a subfield of machine learning that works very well on unstructed data. In machine learning, features are engineered and passed into the architecture to produce a prediction. This task can become very repetitive and laborious. Deep learning takes care of the feature engineering aspect, it tries to learn the features inherent in the data. Surface defect is a common problem that manufacturing industries faced. The need to deliver high quality products are increasing on the daily and due to the vast amount of data being produced every second, we need a way to leverage this data. 
+
 
 ## Aims and Objectives
 Create a convnet (Convolutional Neural Network) that separates defect surface materials from non defects
