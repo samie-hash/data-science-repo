@@ -6,7 +6,9 @@ Defect detection plays a vital role in quality control and assurance process. Du
 "Defect" can be defined as a deviation from the norm. Surface defect detections can be thought of as detection of scratches, color contamination, holes etc. Manual detection was considered the norm, but this method leads to low efficiency, the speed of detection is relatively low and it's also subject to human emotions.
 
 ## Motivation
-Deep learning is a subfield of machine learning that works very well on unstructed data. In machine learning, features are engineered and passed into the architecture to produce a prediction. This task can become very repetitive and laborious. Deep learning takes care of the feature engineering aspect, it tries to learn the features inherent in the data. Surface defect is a common problem that manufacturing industries faced. The need to deliver high quality products are increasing on the daily and due to the vast amount of data being produced every second, we need a way to leverage this data. 
+Deep learning is a subfield of machine learning that works very well on unstructed data. In machine learning, features are engineered and passed into the architecture to produce a prediction. This task can become very repetitive and laborious. Deep learning takes care of the feature engineering aspect, it tries to learn the features inherent in the data. 
+
+Surface defect is a common problem that manufacturing industries faced. The need to deliver high quality products are increasing on the daily and due to the vast amount of data being produced every second, we need a way to leverage this data. 
 
 In large scale production, the amount of data generated is not the problem, but the ratio of defect to non defect is a major concern. The fact that observing a defect product is very rare is a challenge to deep learning algorithms. Moreso, certain defects can also be rare in occurence. Another important challenge is annotations, this task is often laborious and costly to produce. This project downsamples the majority class to obtain some sort of balance between class labels and also leverages transfer learning due to low volume of data.
 
